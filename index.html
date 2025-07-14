@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Filename Standardizer - Lean Six Sigma Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(122,0,60,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .format-display {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .format-display h3 {
+            margin: 0 0 10px 0;
+            color: #2e7d32;
+        }
+        .format-display .format-pattern {
+            font-family: monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1976d2;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .label-help {
+            font-size: 12px;
+            color: #777;
+            font-weight: normal;
+        }
+        input[type="text"], input[type="date"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .radio-option input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+        #customNumberInput {
+            width: 80px;
+            margin-left: 10px;
+        }
+        .output-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+        .output-group {
+            margin-bottom: 20px;
+        }
+        .output-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .output-value {
+            font-family: monospace;
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            word-break: break-all;
+            position: relative;
+        }
+        .copy-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #45a049;
+        }
+        .copy-btn:active {
+            background-color: #3d8b40;
+        }
+        .example-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e8;
+            border-radius: 5px;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        .example-files {
+            font-family: monospace;
+            font-size: 14px;
+            color: #333;
+        }
+        .instructions {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e4ccd8;
+            border: 1px solid #7A003C;
+            border-radius: 5px;
+        }
+        .instructions h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .instructions2 {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fee5bc;
+            border: 1px solid #FDBF57;
+            border-radius: 5px;
+        }
+        .instructions2 h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .instructions p, .instructions h3, .instructions ol {
+            color: #000;
+        }
+		.instructions2 p, .instructions2 h3, .instructions2 ol {
+            color: #000;
+        }
+		.credit {
+			margin-top: 10px;
+			font-style: italic;
+			color: #1b1b1b;
+			font-size: 0.9em;
+		
+		}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📁 Simple Filename Standardizer</h1>
+        <p class="subtitle">Lean Six Sigma Yellow Belt Project - Matt Demers - 2025</p>
+        
+        <div class="format-display">
+            <h3>Standardized Format:</h3>
+            <div class="format-pattern">YYYYMMDD-departmentcode-projecttitle-###.ext</div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="projectTitle">Project Title:</label>
+                <input type="text" id="projectTitle" placeholder="e.g., Holiday Party" oninput="generateRegex()">
+            </div>
+			<div class="form-group">
+                <label for="fileDate">Date Captured:</label>
+                <input type="date" id="fileDate" onchange="generateRegex()">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Department:</label>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="deptHCS" name="department" value="HCS" checked onchange="generateRegex()">
+                    <label for="deptHCS">HCS (Housing & Conference Services)</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="deptCES" name="department" value="CES" onchange="generateRegex()">
+                    <label for="deptCES">CES (Conference & Event Services)</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>File Numbering:</label>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="start001" name="numbering" value="001" checked onchange="generateRegex()">
+                    <label for="start001">Start at 1</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="startCustom" name="numbering" value="custom" onchange="generateRegex()">
+                    <label for="startCustom">Start at:</label>
+                    <input type="number" id="customNumberInput" min="1" max="999" value="1" disabled oninput="generateRegex()">
+                </div>
+            </div>
+        </div>
+        
+        <div class="output-section" id="outputSection" style="display: none;">
+            <div class="output-group">
+                <div class="output-label">PowerToys PowerRename "Search for" Pattern:</div>
+                <div class="output-value" id="regexPattern">
+                    <button class="copy-btn" onclick="copyToClipboard('regexPattern')">Copy</button>
+                </div>
+            </div>
+            
+            <div class="output-group">
+                <div class="output-label">PowerToys PowerRename "Replace with" Pattern:</div>
+                <div class="output-value" id="generatedFilename">
+                    <button class="copy-btn" onclick="copyToClipboard('generatedFilename')">Copy</button>
+                </div>
+            </div>
+            
+            <div class="example-section">
+                <div class="example-title">Example Files (Sequential Numbering):</div>
+                <div class="example-files" id="exampleFiles"></div>
+            </div>
+        </div>
+        
+        
+        <div class="instructions">
+            <h3>How to Use with PowerToys PowerRename:</h3>
+            <ol>
+                <li>Select the file date, department, and enter a project title</li>
+                <li>Choose your starting number (1 or custom)</li>
+                <li>Select files and right-click → "PowerRename"</li>
+                <li>Copy and paste the "Search for" pattern in the "Search for" field</li>
+                <li>Copy and paste the "Replace with" pattern in the "Replace with" field</li>
+                <li>Check "Use regular expressions"</li>
+                <li>Preview and apply changes</li>
+            </ol>
+            <p><strong>Pro Tip:</strong> Use descriptive but concise project titles. Files will sort chronologically when sorted by name!</p>
+        </div>
+		<div class="instructions2">
+			<h3>How to get PowerToys PowerRename</h3>
+			<ol>
+				<li><a href="mailto:hcsit@mcmaster.ca">Ask IT to install Microsoft Powertoys</a> on your computer (Windows Only).</li>
+				<li>Select a bunch of files, right-click one of them, and select "Rename with PowerRename".</li>
+		</div>
+		<div class="credit">
+		Coded by <a href="mailto:demerm11@mcmaster.ca">Matt Demers</a>.
+		</div>
+    </div>
+
+    <script>
+        function sanitizeProjectTitle(text) {
+            return text
+                .toLowerCase()
+                .replace(/[^a-z0-9\s]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const yyyy = date.getFullYear();
+            const mm = (date.getMonth() + 1).toString().padStart(2, '0');
+            const dd = date.getDate().toString().padStart(2, '0');
+            return `${yyyy}${mm}${dd}`;
+        }
+
+        function getStartingNumber() {
+            const numberingType = document.querySelector('input[name="numbering"]:checked').value;
+            if (numberingType === 'custom') {
+                return parseInt(document.getElementById('customNumberInput').value);
+            }
+            return 1;
+        }
+
+        function generateRegex() {
+            const fileDate = document.getElementById('fileDate').value;
+            const projectTitle = document.getElementById('projectTitle').value.trim();
+            const outputSection = document.getElementById('outputSection');
+            const customNumberInput = document.getElementById('customNumberInput');
+            const startCustom = document.getElementById('startCustom');
+            
+            // Enable/disable custom number input
+            customNumberInput.disabled = !startCustom.checked;
+            
+            if (!fileDate || !projectTitle) {
+                outputSection.style.display = 'none';
+                return;
+            }
+            
+            const formattedDate = formatDate(fileDate);
+            const sanitizedTitle = sanitizeProjectTitle(projectTitle);
+            const startingNumber = getStartingNumber();
+            
+            const department = document.querySelector('input[name="department"]:checked').value;
+            const filename = `${formattedDate}-${department}-${sanitizedTitle}-\${padding=3;start=${startingNumber}}.$1`;
+            const regexPattern = `^.*\\.(.*)$`;
+            
+            document.getElementById('generatedFilename').innerHTML = `${filename}<button class="copy-btn" onclick="copyToClipboard('generatedFilename')">Copy</button>`;
+            document.getElementById('regexPattern').innerHTML = `${regexPattern}<button class="copy-btn" onclick="copyToClipboard('regexPattern')">Copy</button>`;
+            
+            // Generate sequential examples
+            const examples = [];
+            for (let i = 0; i < 5; i++) {
+                const num = (startingNumber + i).toString().padStart(3, '0');
+                examples.push(`${formattedDate}-${department}-${sanitizedTitle}-${num}.jpg`);
+            }
+            
+            document.getElementById('exampleFiles').innerHTML = examples.join('<br>');
+            
+            outputSection.style.display = 'block';
+        }
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent.replace('Copy', '').trim();
+            
+            navigator.clipboard.writeText(text).then(function() {
+                const btn = element.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.backgroundColor = '#28a745';
+                
+                setTimeout(function() {
+                    btn.textContent = originalText;
+                    btn.style.backgroundColor = '#4CAF50';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy to clipboard. Please select and copy manually.');
+            });
+        }
+
+        // Set today's date as default
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const dateString = today.toISOString().split('T')[0];
+            document.getElementById('fileDate').value = dateString;
+        });
+    </script>
+</body>
+</html>
